@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { AnimateInView } from '@/components/animate-in-view'
 
 interface CounterProps {
   end: number
@@ -74,34 +75,61 @@ interface StatItem {
   suffix: string
   label: string
   decimals?: number
+  color: string
+  icon: string
 }
 
 export function Stats(_props: StatsProps) {
   const { t } = useTranslation()
 
   const stats: StatItem[] = [
-    { end: 50, suffix: '+', label: t('upstream services integrated') },
-    { end: 100, suffix: '+', label: t('model billing support') },
-    { end: 50, suffix: '+', label: t('compatible API routes') },
-    { end: 10, suffix: '+', label: t('scheduling controls') },
+    { end: 50, suffix: '+', label: t('upstream services integrated'), color: 'from-violet-500 to-fuchsia-500', icon: '⚡' },
+    { end: 100, suffix: '+', label: t('model billing support'), color: 'from-blue-500 to-cyan-500', icon: '🎯' },
+    { end: 50, suffix: '+', label: t('compatible API routes'), color: 'from-emerald-500 to-teal-500', icon: '🔗' },
+    { end: 10, suffix: '+', label: t('scheduling controls'), color: 'from-amber-500 to-orange-500', icon: '📊' },
   ]
 
   return (
-    <div className='border-border/40 bg-muted/10 relative z-10 border-y'>
-      <div className='mx-auto max-w-6xl px-6 py-10 md:py-12'>
-        <div className='grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12'>
-          {stats.map((s) => (
-            <div
+    <div className='relative z-10 overflow-hidden'>
+      {/* Ambient glow */}
+      <div
+        aria-hidden
+        className='pointer-events-none absolute inset-0 -z-10 opacity-20 dark:opacity-[0.06]'
+        style={{
+          background: [
+            'radial-gradient(ellipse 50% 60% at 20% 50%, oklch(0.7 0.15 280 / 60%) 0%, transparent 70%)',
+            'radial-gradient(ellipse 50% 60% at 80% 50%, oklch(0.7 0.15 200 / 60%) 0%, transparent 70%)',
+          ].join(', '),
+        }}
+      />
+      
+      <div className='mx-auto max-w-6xl px-6 py-16 md:py-20'>
+        <div className='grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8'>
+          {stats.map((s, i) => (
+            <AnimateInView
               key={s.label}
-              className='flex flex-col items-center text-center'
+              delay={i * 100}
+              animation='fade-up'
+              className='group relative'
             >
-              <span className='text-2xl font-bold tracking-tight md:text-3xl'>
-                <Counter end={s.end} suffix={s.suffix} decimals={s.decimals} />
-              </span>
-              <span className='text-muted-foreground mt-1.5 text-xs'>
-                {s.label}
-              </span>
-            </div>
+              <div className='relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-6 backdrop-blur-sm transition-all duration-500 hover:border-white/20 hover:shadow-lg hover:shadow-violet-500/5 dark:border-white/[0.06] dark:from-white/[0.04] dark:to-white/[0.01] dark:hover:border-white/[0.12]'>
+                {/* Top gradient line */}
+                <div className={`absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${s.color} opacity-60`} />
+                
+                {/* Hover glow */}
+                <div className={`absolute -top-12 left-1/2 -translate-x-1/2 size-32 rounded-full bg-gradient-to-br ${s.color} opacity-0 blur-[40px] transition-opacity duration-500 group-hover:opacity-20`} />
+                
+                <div className='relative flex flex-col items-center text-center'>
+                  <span className='text-2xl mb-2'>{s.icon}</span>
+                  <span className='text-3xl font-bold tracking-tight md:text-4xl'>
+                    <Counter end={s.end} suffix={s.suffix} decimals={s.decimals} />
+                  </span>
+                  <span className='text-muted-foreground mt-2 text-xs leading-relaxed'>
+                    {s.label}
+                  </span>
+                </div>
+              </div>
+            </AnimateInView>
           ))}
         </div>
       </div>

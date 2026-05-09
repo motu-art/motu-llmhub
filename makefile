@@ -1,6 +1,7 @@
 FRONTEND_DIR = ./web/default
 FRONTEND_CLASSIC_DIR = ./web/classic
 BACKEND_DIR = .
+REPO = zhongzi/llmhub
 
 .PHONY: all build-frontend build-frontend-classic build-all-frontends start-backend dev dev-api dev-web dev-web-classic
 
@@ -17,8 +18,9 @@ build-frontend-classic:
 build-all-frontends: build-frontend build-frontend-classic
 
 start-backend:
+	@touch $(BACKEND_DIR)/main.go
 	@echo "Starting backend dev server..."
-	@cd $(BACKEND_DIR) && go run main.go &
+	@cd $(BACKEND_DIR) && go run main.go
 
 dev-api:
 	@echo "Starting backend services (docker)..."
@@ -33,3 +35,11 @@ dev-web-classic:
 	@cd $(FRONTEND_CLASSIC_DIR) && bun install && bun run dev
 
 dev: dev-api dev-web
+
+docker-build:
+	docker build --platform=linux/amd64 --build-arg TARGETARCH=amd64 . -f ./Dockerfile -t $(REPO):latest
+
+docker-release:
+	docker tag $(REPO):latest -t $(REPO):$(cat ./VERSION)
+	docker push $(REPO):latest
+	docker push $(REPO):$(cat ./VERSION)

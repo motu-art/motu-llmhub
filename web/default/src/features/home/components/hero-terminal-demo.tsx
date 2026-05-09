@@ -187,9 +187,9 @@ export function HeroTerminalDemo() {
     <div className='mx-auto mt-16 w-full max-w-2xl'>
       <div
         className={cn(
-          'overflow-hidden rounded-2xl border backdrop-blur-sm',
-          'border-border/60 bg-white/95 shadow-[0_20px_50px_-25px_rgba(15,23,42,0.18)]',
-          'dark:border-white/[0.06] dark:bg-[#0b0f17]/95 dark:shadow-[0_20px_60px_-25px_rgba(0,0,0,0.7)]'
+          'overflow-hidden rounded-2xl border backdrop-blur-xl',
+          'border-white/20 bg-white/[0.85] shadow-[0_24px_60px_-20px_rgba(15,23,42,0.15),0_0_0_1px_rgba(255,255,255,0.1)_inset]',
+          'dark:border-white/[0.08] dark:bg-[#0a0e18]/90 dark:shadow-[0_24px_80px_-20px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.04)_inset]'
         )}
       >
         {/* Tab strip */}
@@ -263,7 +263,7 @@ export function HeroTerminalDemo() {
         <div
           className={cn(
             'flex items-center justify-between border-t px-5 py-2.5',
-            'border-border/40 bg-muted/30 dark:border-white/[0.05] dark:bg-white/[0.02]'
+            'border-white/[0.08] bg-white/[0.03] dark:border-white/[0.05] dark:bg-white/[0.015]'
           )}
         >
           <div className='text-foreground/40 flex items-center gap-3 text-[10px] tabular-nums'>
